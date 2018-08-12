@@ -5,6 +5,9 @@
         <router-link to="/" class="navbar-brand">Study Vue.js</router-link>
       </div>
       <div class="collapse navbar-collapse">
+        <div class="nav navbar-nav">
+          <router-link to="/create" activeClass="active" tag="li"><a>Create</a></router-link>
+        </div>
         <div class="nav navbar-nav navbar-right user-block">
           <button @click="logout()" class="btn btn-link">Logout</button>
         </div>

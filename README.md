@@ -1,3 +1,12 @@
+Auth data:
+ login: admin
+ pass: admin
+ 
+ or
+ 
+ login: user
+ pass: user
+
 # vue-cli
 
 > Study vuejs 2

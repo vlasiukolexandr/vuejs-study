@@ -1,20 +1,17 @@
 <template>
   <div class="container">
     <div class="row justify-content-lg-center">
-      <div class="col-lg-10">
-        <h1>Library page</h1>
+      <div class="col-lg-12">
+        <h1>Library</h1>
         <div class="row">
-          <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+          <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 search">
             <input class="form-control mr-sm-2" type="search" v-model="search" placeholder="Search" aria-label="Search">
           </div>
           <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-            <button @click="handleClearSearch" class="btn btn-success">clear search</button>
+            <button @click="handleClearSearch" class="btn btn-success">Search</button>
           </div>
         </div>
-        <div class="buttons">
-          <button class="btn btn-primary" @click="handleCreate">Create</button>
-        </div>
-        <p class="alert alert-danger" v-if="list.length === 0">Not found</p>
+        <p class="alert alert-danger" v-if="list.length === 0">Book not found</p>
         <table class="table">
           <thead>
           <tr>
@@ -34,22 +31,33 @@
             <td>{{ item.author }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item.description }}</td>
-            <td>{{ item.date }}</td>
+            <td>{{ item.date | formatDate }}</td>
             <td class="actions">
               <button class="btn btn-success" @click="handleEdit(item.id)">edit</button>
-              <button class="btn btn-danger" @click="handleDelete(item.id)">delete</button>
+              <button class="btn btn-danger" @click="handleDelete(item.id)" data-toggle="modal"
+                      data-target="#exampleModalCenter">delete
+              </button>
             </td>
           </tr>
           </tbody>
         </table>
-      <button class="btn btn-link margin" v-show="loadMoreVisible" @click="handleLoadMore">more</button>
+        <button class="btn btn-link margin" v-show="loadMoreVisible" @click="handleLoadMore">more</button>
+      </div>
     </div>
-  </div>
+    <app-modal
+      :record="selectedRecord"
+      @confirm='deleteUser'
+      @cancel="cancelDelete"></app-modal>
   </div>
 </template>
 
 <script>
+  import Modal from './Modal.vue'
+
   export default {
+    components: {
+      appModal: Modal
+    },
     computed: {
       list() {
         return this.$store.getters.getList.filter((i, index) => (~i.title.toLowerCase().indexOf(this.search.toLowerCase())) && (index < this.count))
@@ -61,7 +69,8 @@
     data() {
       return {
         search: '',
-        count: 3
+        count: 3,
+        selectedRecord: {}
       }
     },
     methods: {
@@ -69,33 +78,29 @@
         this.$router.push(`/edit/${id}`)
       },
       handleDelete(id) {
-        this.$store.dispatch('delete', id)
-      },
-      handleCreate() {
-        this.$router.push(`/create`)
+        this.selectedRecord = this.list.filter(i => i.id === id)[0]
+        //
       },
       handleClearSearch() {
         this.search = ''
       },
       handleLoadMore() {
-        this.count += 5
+        this.count += 3
+      },
+      cancelDelete() {
+        this.selectedRecord = {};
+      },
+      deleteUser() {
+        this.$store.dispatch('delete', this.selectedRecord.id)
+        this.selectedRecord = {};
       }
     }
   }
 </script>
 
 <style scoped lang="scss">
-  .col-lg-6 {
-    text-align: left;
-  }
-
-  .alert-danger, .list-group-item, .buttons {
-    margin-top: 20px;
-    text-align: left;
-  }
-
-  .margin {
-    margin-top: 20px;
+  .search {
+    margin-bottom: 50px;
   }
 
   .container {

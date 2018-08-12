@@ -5,12 +5,13 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    count: 6,
+    count: 5,
     authors: [
       'J. K. Rowling',
       'J. R. R. Tolkien',
       'C. S. Lewis',
-      'Charles Dickens'
+      'Charles Dickens',
+      'Jules Verne'
     ],
     list: [
       {
@@ -44,6 +45,14 @@ const store = new Vuex.Store({
         author: 'Charles Dickens',
         description: 'Some description',
         date: new Date()
+      },
+      {
+        id: 5,
+        isbn: 11022022,
+        title:'From the Earth to the Moon',
+        author: 'Jules Verne',
+        description: 'Some description',
+        date: new Date()
       }
     ]
   },
@@ -53,6 +62,36 @@ const store = new Vuex.Store({
     },
     getAuthors: state => {
       return state.authors
+    }
+  },
+  mutations: {
+    delete (state, id) {
+      state.list = state.list.filter(i => i.id !== id)
+    },
+    edit (state, item) {
+      state.list = state.list.map(i => {
+        if (i.id == item.id) {
+          return {
+            ...i,
+            ...item
+          }
+        }
+        return i
+      })
+    },
+    add (state, item) {
+      state.list.push({ ...item, id: ++state.count, date: new Date()})
+    }
+  },
+  actions: {
+    delete ({ commit, state}, id) {
+      commit('delete', id)
+    },
+    edit ({ commit, state}, item) {
+      commit('edit', item)
+    },
+    add ({ commit, state}, item) {
+      commit('add', item)
     }
   }
 })

@@ -1,5 +1,6 @@
 <template>
   <div class='container login'>
+    <h1>Please, sign in</h1>
     <div class='row justify-content-lg-center'>
       <div class='col-sm-offset-3 col-sm-6 col-sm-offset-3 '>
         <form @submit.prevent="handleSubmit">
@@ -10,7 +11,7 @@
           <div class="form-group">
             <input type="password" class="form-control" v-bind:class="{error}" id="exampleInputPassword1" placeholder="Password">
           </div>
-          <button type="submit" class="btn btn-primary pull-right">Login</button>
+          <button type="submit" class="btn btn-primary pull-right">Sign in</button>
         </form>
       </div>
     </div>
@@ -43,9 +44,6 @@
           this.error = true
         }
       }
-    },
-    created(){
-
     }
   }
 </script>
