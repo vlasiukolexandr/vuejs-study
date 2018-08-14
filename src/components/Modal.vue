@@ -23,13 +23,13 @@
 
 <script>
   export default {
-    props: ["record"],
+    props: ['record'],
     methods: {
       onConfirm() {
-        this.$emit("confirm");
+        this.$emit('confirm');
       },
       onCancel() {
-        this.$emit("cancel");
+        this.$emit('cancel');
       }
     }
   }

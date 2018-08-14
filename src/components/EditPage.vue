@@ -32,7 +32,6 @@
 
 <script>
   export default {
-    name: 'EditPage',
     props: {
       msg: String
     },
@@ -41,6 +40,12 @@
         item: {},
         authors: []
       }
+    },
+    created() {
+      if (this.$route.params.id)
+        this.item = this.$store.getters.getList.find(i => i.id == this.$route.params.id)
+
+      this.authors = this.$store.getters.getAuthors
     },
     beforeRouteLeave(to, from, next) {
       this.item = []
@@ -55,12 +60,6 @@
         }
         this.$router.push('/')
       }
-    },
-    created() {
-      if (this.$route.params.id)
-        this.item = this.$store.getters.getList.find(i => i.id == this.$route.params.id)
-
-      this.authors = this.$store.getters.getAuthors
     }
   }
 </script>

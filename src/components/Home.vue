@@ -79,7 +79,6 @@
       },
       handleDelete(id) {
         this.selectedRecord = this.list.filter(i => i.id === id)[0]
-        //
       },
       handleClearSearch() {
         this.search = ''

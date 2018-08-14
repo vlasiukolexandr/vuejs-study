@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import {library} from './../data/library.js'
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    count: 5,
+    count: library.length,
     authors: [
       'J. K. Rowling',
       'J. R. R. Tolkien',
@@ -13,56 +15,11 @@ const store = new Vuex.Store({
       'Charles Dickens',
       'Jules Verne'
     ],
-    list: [
-      {
-        id: 1,
-        isbn: 12082018,
-        title:'Harry Potter',
-        author: 'J. K. Rowling',
-        description: 'Some description',
-        date: new Date()
-      },
-      {
-        id: 2,
-        isbn: 11082019,
-        title:'Lord of the Rings',
-        author: 'J. R. R. Tolkien',
-        description: 'Some description',
-        date: new Date()
-      },
-      {
-        id: 3,
-        isbn: 11082020,
-        title:'The Chronicles of Narnia',
-        author: 'C. S. Lewis',
-        description: 'Some description',
-        date: new Date()
-      },
-      {
-        id: 4,
-        isbn: 11022021,
-        title:'A Christmas Carol',
-        author: 'Charles Dickens',
-        description: 'Some description',
-        date: new Date()
-      },
-      {
-        id: 5,
-        isbn: 11022022,
-        title:'From the Earth to the Moon',
-        author: 'Jules Verne',
-        description: 'Some description',
-        date: new Date()
-      }
-    ]
+    list: library
   },
   getters: {
-    getList: state => {
-      return state.list.sort((a, b) => b.id - a.id)
-    },
-    getAuthors: state => {
-      return state.authors
-    }
+    getList: state => state.list.sort((a, b) => b.id - a.id),
+    getAuthors: state => state.authors
   },
   mutations: {
     delete (state, id) {
@@ -70,12 +27,12 @@ const store = new Vuex.Store({
     },
     edit (state, item) {
       state.list = state.list.map(i => {
-        if (i.id == item.id) {
+        if (i.id == item.id)
           return {
             ...i,
             ...item
           }
-        }
+
         return i
       })
     },

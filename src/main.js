@@ -10,10 +10,9 @@ import moment from 'moment'
 
 Vue.use(VueCookie)
 
-Vue.filter('formatDate', function(value) {
-  if (value) {
+Vue.filter('formatDate', value => {
+  if (value)
     return moment(String(value)).format('MM/DD/YYYY hh:mm')
-  }
 })
 
 router.beforeEach((to, from, next) => {
