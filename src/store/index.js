@@ -15,11 +15,14 @@ const store = new Vuex.Store({
       'Charles Dickens',
       'Jules Verne'
     ],
-    list: library
+    list: library,
+    search: ''
   },
   getters: {
     getList: state => state.list.sort((a, b) => b.id - a.id),
-    getAuthors: state => state.authors
+    getAuthors: state => state.authors,
+    getFilteredList: state => state.list
+          .filter(i => (~i.title.toLowerCase().indexOf(state.search.toLowerCase())))
   },
   mutations: {
     delete (state, id) {
@@ -38,6 +41,12 @@ const store = new Vuex.Store({
     },
     add (state, item) {
       state.list.push({ ...item, id: ++state.count, date: new Date()})
+    },
+    search(state, item) {
+      state.search = item
+    },
+    findItem(state, item) {
+      return state.list.find(i => i.id == item)
     }
   },
   actions: {
@@ -49,6 +58,12 @@ const store = new Vuex.Store({
     },
     add ({ commit, state}, item) {
       commit('add', item)
+    },
+    search ({commit, state}, item) {
+      commit('search', item)
+    },
+    findItem ({commit, state}, item) {
+      commit('findItem', item)
     }
   }
 })

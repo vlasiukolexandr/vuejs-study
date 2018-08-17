@@ -31,6 +31,8 @@
 </template>
 
 <script>
+  import {mapActions, mapGetters} from 'vuex'
+
   export default {
     props: {
       msg: String
@@ -43,23 +45,27 @@
     },
     created() {
       if (this.$route.params.id)
-        this.item = this.$store.getters.getList.find(i => i.id == this.$route.params.id)
+        this.item = this.findItem(this.$route.params.id)
 
-      this.authors = this.$store.getters.getAuthors
+      this.authors = this.$store.state.authors // didn`t understand what to do here in point 6 (authors should be map from getters)
     },
     beforeRouteLeave(to, from, next) {
       this.item = []
       next()
     },
     methods: {
+      ...mapActions(['edit', 'add', 'findItem']),
       handleSubmit() {
         if (this.$route.params.id) {
-          this.$store.dispatch('edit', this.item)
+          this.edit(this.item)
         } else {
-          this.$store.dispatch('add', this.item)
+          this.add(this.item)
         }
         this.$router.push('/')
       }
+    },
+    computed: {
+      ...mapGetters(['getList'])
     }
   }
 </script>
